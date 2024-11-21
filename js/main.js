@@ -4,15 +4,19 @@ const buttonOut = document.querySelector('.button-out');
 const closeAuth = document.querySelector('.close-auth');
 const logInForm = document.querySelector('#logInForm');
 const loginInput = document.querySelector('#login');
+const passwordInput = document.querySelector('#password'); 
 const userName = document.querySelector('.user-name');
 const buttonLogin = document.querySelector('.button-login');
+const modalOverlay = document.querySelector('.modal-overlay'); 
 
 function openModalAuth() {
   modalAuth.classList.add('is-open');
+  document.body.style.overflow = 'hidden'; 
 }
 
 function closeModalAuth() {
   modalAuth.classList.remove('is-open');
+  document.body.style.overflow = ''; 
 }
 
 function checkAuth() {
@@ -40,25 +44,56 @@ function logOut() {
   buttonOut.style.display = 'none';
 }
 
-buttonAuth.addEventListener('click', openModalAuth);
+function markInvalidField(field) {
+  field.classList.add('error');
+}
 
-buttonOut.addEventListener('click', logOut);
+function clearInvalidField(field) {
+  field.classList.remove('error');
+}
+
+logInForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+  let valid = true;
+
+  if (!loginInput.value.trim()) {
+    markInvalidField(loginInput);
+    valid = false;
+  } else {
+    clearInvalidField(loginInput); 
+  }
+
+  if (!passwordInput.value.trim()) {
+    markInvalidField(passwordInput);
+    valid = false;
+  } else {
+    clearInvalidField(passwordInput); 
+  }
+
+  if (valid) {
+    localStorage.setItem('login', loginInput.value.trim());
+    logIn(loginInput.value.trim());
+  }
+});
+
+buttonAuth.addEventListener('click', () => {
+  clearInvalidField(loginInput);
+  clearInvalidField(passwordInput);
+  loginInput.value = ''; 
+  passwordInput.value = ''; 
+  openModalAuth();
+});
+
+modalAuth.addEventListener('click', (event) => {
+  if (event.target === modalAuth) {
+    closeModalAuth();
+  }
+});
 
 closeAuth.addEventListener('click', closeModalAuth);
 
-logInForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const login = loginInput.value.trim();
-  
-    if (login === '') {
-      loginInput.classList.add('error');  // Add error class for styling
-      return;
-    }
-  
-    localStorage.setItem('login', login);
-    logIn(login);
-    logInForm.reset();
-    loginInput.classList.remove('error');  // Remove error class when valid
-  });
-  
+buttonOut.addEventListener('click', () => {
+  logOut();
+});
+
 checkAuth();
