@@ -20,12 +20,10 @@ function closeModalAuth() {
   document.body.style.overflow = '';
 }
 
-// Highlight field with error
 function markInvalidField(field) {
   field.classList.add('error');
 }
 
-// Clear error highlight
 function clearInvalidField(field) {
   field.classList.remove('error');
 }
@@ -73,17 +71,6 @@ function createCard({ image, title, time, price, category, rating }) {
       </div>
     </div>
   `;
-
-  card.addEventListener('click', (event) => {
-    event.preventDefault();
-    if (!localStorage.getItem('login')) {
-      openModalAuth();
-    } else {
-      localStorage.setItem('selectedRestaurant', card.dataset.restaurant);
-      window.location.href = 'restaurant.html';
-    }
-  });
-
   return card;
 }
 
@@ -93,6 +80,35 @@ function renderCards(data) {
     cardsRestaurants.append(card);
   });
 }
+
+document.addEventListener('click', (event) => {
+  const target = event.target;
+
+  if (target.closest('.button-auth')) {
+    clearInvalidField(loginInput);
+    clearInvalidField(passwordInput);
+    openModalAuth();
+  }
+
+  if (target.closest('.close-auth')) {
+    closeModalAuth();
+  }
+
+  if (target.closest('.button-out')) {
+    logOut();
+  }
+
+  const card = target.closest('.card-restaurant');
+  if (card) {
+    event.preventDefault();
+    if (!localStorage.getItem('login')) {
+      openModalAuth();
+    } else {
+      localStorage.setItem('selectedRestaurant', card.dataset.restaurant);
+      window.location.href = 'restaurant.html';
+    }
+  }
+});
 
 logInForm.addEventListener('submit', (event) => {
   event.preventDefault();
@@ -117,15 +133,6 @@ logInForm.addEventListener('submit', (event) => {
     logIn(loginInput.value.trim());
   }
 });
-
-buttonAuth.addEventListener('click', () => {
-  clearInvalidField(loginInput);
-  clearInvalidField(passwordInput);
-  openModalAuth();
-});
-
-closeAuth.addEventListener('click', closeModalAuth);
-buttonOut.addEventListener('click', logOut);
 
 const restaurants = [
   {
@@ -163,5 +170,4 @@ const restaurants = [
 ];
 
 renderCards(restaurants);
-
 checkAuth();
