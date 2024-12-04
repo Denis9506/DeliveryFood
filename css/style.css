@@ -847,7 +847,6 @@ button {
     }
 }
 
-/* Invalid input field */
 .login.error, input[type="password"].error {
     border-color: red;
 }
@@ -863,4 +862,43 @@ button {
     color: #333;
     transition: border 0.3s;
 }
-
+.promo-slider .swiper-slide {
+    position: relative;
+    text-align: center;
+  }
+  .promo-slider {
+    width: 90%; 
+    max-height: 400px;
+    margin: 0 auto;
+    margin-bottom: 25px ;
+}
+  
+  .promo-slider .swiper-slide img {
+    height: auto; 
+    object-fit: cover; 
+    max-height: 350px; 
+  }
+  .promo-content {
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    text-align: center;
+  }
+  
+  .promo-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
+  }
+  
+  .promo-text {
+    font-size: 1rem;
+    color: rgb(255, 255, 255);
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+  }
+  
