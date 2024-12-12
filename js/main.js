@@ -8,10 +8,24 @@ const passwordInput = document.querySelector('#password');
 const userName = document.querySelector('.user-name');
 const cardsRestaurants = document.querySelector('.cards-restaurants');
 
+async function getData(url) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Error fetching data: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Fetch error:', error);
+  }
+}
+
 function openModalAuth() {
   loginInput.value = '';
   passwordInput.value = '';
   modalAuth.classList.add('is-open');
+  clearInvalidField(loginInput);
+  clearInvalidField(passwordInput);
   document.body.style.overflow = 'hidden';
 }
 
@@ -53,21 +67,24 @@ function logOut() {
   buttonOut.style.display = 'none';
 }
 
-function createCard({ image, title, time, price, category, rating }) {
+function createCard({ image, name, time_of_delivery, price, kitchen, stars, products }) {
   const card = document.createElement('a');
   card.classList.add('card', 'card-restaurant');
-  card.dataset.restaurant = JSON.stringify({ title, price, category, rating });
+
+  card.dataset.restaurant = JSON.stringify({ name, price, kitchen, stars, products });
+  card.dataset.products = products;
+
   card.innerHTML = `
-    <img src="${image}" alt="${title}" class="card-image" />
+    <img src="${image}" alt="${name}" class="card-image" />
     <div class="card-text">
       <div class="card-heading">
-        <h3 class="card-title">${title}</h3>
-        <span class="card-tag tag">${time}</span>
+        <h3 class="card-title">${name}</h3>
+        <span class="card-tag tag">${time_of_delivery}</span>
       </div>
       <div class="card-info">
-        <div class="rating">${rating}</div>
+        <div class="rating">${stars}</div>
         <div class="price">від ${price} ₴</div>
-        <div class="category">${category}</div>
+        <div class="category">${kitchen}</div>
       </div>
     </div>
   `;
@@ -75,6 +92,7 @@ function createCard({ image, title, time, price, category, rating }) {
 }
 
 function renderCards(data) {
+  cardsRestaurants.innerHTML = '';
   data.forEach((restaurant) => {
     const card = createCard(restaurant);
     cardsRestaurants.append(card);
@@ -134,40 +152,6 @@ logInForm.addEventListener('submit', (event) => {
   }
 });
 
-const restaurants = [
-  {
-    image: 'img/pizza-plus/preview.jpg',
-    title: 'Піца плюс',
-    time: '50 хвилин',
-    price: '200',
-    category: 'Піца',
-    rating: '4.5',
-  },
-  {
-    image: 'img/tanuki/preview.jpg',
-    title: 'Танукі',
-    time: '60 хвилин',
-    price: '1200',
-    category: 'Суші, роли',
-    rating: '4.5',
-  },
-  {
-    image: 'img/food-band/preview.jpg',
-    title: 'FoodBand',
-    time: '40 хвилин',
-    price: '150',
-    category: 'Піца',
-    rating: '4.5',
-  },
-  {
-    image: 'img/food-band/preview.jpg',
-    title: 'TEST',
-    time: 'TEST хвилин',
-    price: '9999',
-    category: 'TEST',
-    rating: '999',
-  },
-];
+getData('./db/partners.json').then(renderCards);
 
-renderCards(restaurants);
 checkAuth();
