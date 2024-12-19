@@ -1,7 +1,67 @@
-// Variables for authentication
 const buttonAuth = document.querySelector('.button-auth');
 const buttonOut = document.querySelector('.button-out');
 const userName = document.querySelector('.user-name');
+const searchInput = document.querySelector('.input-search');
+
+searchInput.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    const query = searchInput.value.trim().toLowerCase();
+
+    if (!query) {
+      searchInput.style.border = '2px solid red';
+      searchInput.placeholder = 'Поле не може бути порожнім!';
+      searchInput.style.color = 'red';
+
+      setTimeout(() => {
+        searchInput.style.border = ''; 
+        searchInput.placeholder = 'Пошук страв та ресторанів'; // Початковий текст
+        searchInput.style.color = ''; 
+      }, 1500); 
+      return;
+    }
+
+    fetch(`./db/${selectedRestaurant.products}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Error fetching menu: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((menu) => {
+        const filteredMenu = menu.filter((item) =>
+          item.name.toLowerCase().includes(query)
+        );
+        renderMenu(filteredMenu);
+      })
+      .catch((error) => {
+        console.error('Error during search:', error);
+      });
+  }
+});
+const resetButton = document.querySelector('#reset-button');
+
+resetButton.addEventListener('click', () => {
+  searchInput.value = ''; 
+  searchInput.style.border = ''; 
+  searchInput.placeholder = 'Пошук страв та ресторанів'; // Возвращаем исходный текст
+  searchInput.style.color = ''; 
+
+  if (selectedRestaurant) {
+    fetch(`./db/${selectedRestaurant.products}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Error fetching menu: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        renderMenu(data); 
+      })
+      .catch((error) => {
+        console.error('Error during reset:', error);
+      });
+  }
+});
 
 function checkAuth() {
   const login = localStorage.getItem('login');

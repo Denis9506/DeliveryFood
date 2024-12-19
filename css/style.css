@@ -901,4 +901,30 @@ button {
     color: rgb(255, 255, 255);
     text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
   }
+  .input-search {
+    outline: none; /* Забираємо стандартне виділення */
+    border: 2px solid black; /* Початкова рамка прозора */
+    transition: border-color 0.3s; /* Плавний перехід для рамки */
+  }
+  
+  .button-reset {
+    background-color: #f5f5f500; /* Светло-серый фон */
+    border: 1px solid #ccc; /* Граница */
+    border-radius: 4px; /* Скругленные края */
+    padding: 8px 12px; /* Отступы */
+    font-size: 14px; /* Размер текста */
+    cursor: pointer; /* Указатель при наведении */
+    margin-left: 8px; /* Отступ слева от поля поиска */
+    transition: background-color 0.3s ease, border-color 0.3s ease; /* Анимация */
+  }
+  
+  .button-reset:hover {
+    background-color: #e0e0e0; /* Темнее при наведении */
+    border-color: #bbb; /* Темнее граница при наведении */
+  }
+  
+  .button-reset:active {
+    background-color: #d6d6d6; /* Темнее при клике */
+    border-color: #aaa; /* Темнее граница при клике */
+  }
   
