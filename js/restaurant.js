@@ -14,7 +14,7 @@ searchInput.addEventListener('keydown', (event) => {
 
       setTimeout(() => {
         searchInput.style.border = ''; 
-        searchInput.placeholder = 'Пошук страв та ресторанів'; // Початковий текст
+        searchInput.placeholder = 'Пошук страв та ресторанів';
         searchInput.style.color = ''; 
       }, 1500); 
       return;
@@ -43,7 +43,7 @@ const resetButton = document.querySelector('#reset-button');
 resetButton.addEventListener('click', () => {
   searchInput.value = ''; 
   searchInput.style.border = ''; 
-  searchInput.placeholder = 'Пошук страв та ресторанів'; // Возвращаем исходный текст
+  searchInput.placeholder = 'Пошук страв та ресторанів'; 
   searchInput.style.color = ''; 
 
   if (selectedRestaurant) {
@@ -76,25 +76,24 @@ function logIn(login) {
   userName.textContent = login;
   userName.style.display = 'inline';
   buttonAuth.style.display = 'none';
-  buttonOut.style.display = 'block';
+  buttonOut.style.display = 'inline-flex';
 }
 
 function logOut() {
   localStorage.removeItem('login');
   userName.textContent = '';
   userName.style.display = 'none';
-  buttonAuth.style.display = 'block';
+  buttonAuth.style.display = 'inline-flex';
   buttonOut.style.display = 'none';
 }
 
-// Event listeners for login/logout functionality
 buttonAuth.addEventListener('click', () => {
-  window.location.href = 'index.html'; // Redirect to main page for login
+  window.location.href = 'index.html'; 
 });
 
 buttonOut.addEventListener('click', () => {
   logOut();
-  window.location.href = 'index.html'; // Redirect to main page after logout
+  window.location.href = 'index.html'; 
 });
 
 const restaurantName = document.querySelector('.restaurant-name');
@@ -131,6 +130,22 @@ if (selectedRestaurant) {
   restaurantName.textContent = 'Ресторан не обрано';
 }
 
+
+let cartAdd = JSON.parse(localStorage.getItem('cart')) || [];
+
+function addToCart(item) {
+  cartAdd = JSON.parse(localStorage.getItem('cart')) || [];
+  const existingItem = cartAdd.find((cartItem) => cartItem.id === item.id);
+
+  if (existingItem) {
+    existingItem.quantity += 1;
+  } else {
+    cartAdd.push({ ...item, quantity: 1 });
+  }
+
+  localStorage.setItem('cart', JSON.stringify(cartAdd)); 
+}
+
 function renderMenu(menu) {
   menuContainer.innerHTML = ''; 
   menu.forEach(({ id, name, description, price, image }) => {
@@ -146,7 +161,7 @@ function renderMenu(menu) {
           <p class="ingredients">${description}</p>
         </div>
         <div class="card-buttons">
-          <button class="button button-primary button-add-cart">
+          <button class="button button-primary button-add-cart" data-id="${id}" data-name="${name}" data-price="${price}" data-image="${image}">
             <span class="button-card-text">У кошик</span>
           </button>
           <strong class="card-price-bold">${price} ₴</strong>
@@ -154,6 +169,20 @@ function renderMenu(menu) {
       </div>
     `;
     menuContainer.append(card);
+  });
+
+  const addCartButtons = menuContainer.querySelectorAll('.button-add-cart');
+  addCartButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const item = {
+        id: button.dataset.id,
+        name: button.dataset.name,
+        price: parseFloat(button.dataset.price),
+        image: button.dataset.image,
+      };
+
+      addToCart(item); 
+    });
   });
 }
 

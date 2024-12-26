@@ -55,7 +55,7 @@ function logIn(login) {
   userName.textContent = login;
   userName.style.display = 'inline';
   buttonAuth.style.display = 'none';
-  buttonOut.style.display = 'block';
+  buttonOut.style.display = 'inline-flex';
   closeModalAuth();
 }
 
@@ -63,7 +63,7 @@ function logOut() {
   localStorage.removeItem('login');
   userName.textContent = '';
   userName.style.display = 'none';
-  buttonAuth.style.display = 'block';
+  buttonAuth.style.display = 'inline-flex';
   buttonOut.style.display = 'none';
 }
 

@@ -25,6 +25,7 @@
 					<span class="button-text">Війти</span>
 				</button>
 				<button class="button button-primary button-out">
+					<span class="button-out-svg"></span>
 					<span class="button-text">Вийти</span>
 				</button>
 				<button class="button" id="cart-button">
@@ -34,11 +35,8 @@
 			</div>
 		</header>
 	</div>
-	<!-- /.container  -->
-
 	<main class="main">
 		<div class="container">
-			<!-- Search Section -->
 			<div class="section-heading">
 				<h2 class="section-title">Пошук</h2>
 				<label class="search">
@@ -46,7 +44,6 @@
 				  <button class="button-reset" id="reset-button">Сброс</button>
 				</label>
 			  </div>
-			<!-- Restaurant Info Section -->
 			<section class="restaurant-info">
 				<h2 class="restaurant-name"></h2>
 				<div class="restaurant-details">
@@ -55,15 +52,12 @@
 					<span class="restaurant-category"></span>
 				</div>
 			</section>
-			<!-- Menu Section -->
 			<section class="menu">
 				<h2 class="section-title">Меню</h2>
 				<div class="cards cards-menu">
-					<!-- Menu items will be dynamically rendered here -->
 				</div>
 			</section>
 		</div>
-		<!-- /.container -->
 	</main>
 
 	<footer class="footer">
@@ -83,8 +77,17 @@
 			</div>
 		</div>
 	</footer>
+	<div class="modal modal-cart">
+		<div class="modal-dialog-cart">
+			<div class="modal-header">
+				<h3 class="modal-title">Кошик</h3>
+				<button class="close">&times;</button>
+			</div>
+		</div>
+	</div>
 </body>
 
 <script src="js/restaurant.js"></script>
+<script src="js/cart.js"></script>
 
 </html>

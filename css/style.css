@@ -132,6 +132,15 @@ button {
     background-repeat: no-repeat;
 }
 
+.button-log-svg {
+    width: 24px;
+    height: 24px;
+    background-color: #595959;
+    -webkit-mask: url("../img/icon/logout.svg") no-repeat 50% 50%;
+    mask: url("../img/icon/logout.svg") no-repeat 50% 50%;
+    background-repeat: no-repeat;
+}
+
 .button-primary .button-cart-svg {
     background-color: #fff;
 }
@@ -150,8 +159,6 @@ button {
 }
 
 .button-out {
-    display: none;
-    margin: 0 5px;
 }
 
 .user-name {
@@ -415,7 +422,7 @@ button {
     z-index: 999;
 }
 
-.modal-auth {
+.modal-auth, .modal-cart {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -431,12 +438,12 @@ button {
     z-index: 999;
 }
 
-.modal-auth.is-open {
+.modal-auth.is-open, .modal-cart.is-open {
     opacity: 1;
     visibility: visible;
 }
 
-.modal-dialog-auth {
+.modal-dialog-auth, .modal-dialog-cart {
     width: 90%;
     max-width: 400px;
     background: #fff;
@@ -447,7 +454,9 @@ button {
     transform: translateY(-20px);
     transition: transform 0.3s ease;
 }
-
+.modal-dialog-cart {
+ max-width: 1100px;
+}
 .modal-auth.is-open .modal-dialog-auth {
     transform: translateY(0);
 }
@@ -492,9 +501,28 @@ button {
 }
 
 .modal-body {
-    margin-bottom: 22px;
-}
-
+    max-height: 300px; 
+    overflow-y: auto; 
+    padding: 10px; 
+    box-sizing: border-box; 
+  }
+  
+  .modal-body::-webkit-scrollbar {
+    width: 8px; 
+  }
+  
+  .modal-body::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+  }
+  
+  .modal-body::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 4px;  }
+  
+  .modal-body::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+  
 .food-row {
     display: flex;
     align-items: flex-start;
@@ -713,6 +741,9 @@ button {
 }
 
 @media (max-width: 578px) {
+    #log{
+        background-image: url(../img/icon/logout.svg) no-repeat 50% 50%;
+    }
     .container {
         width: 90%;
     }
@@ -810,7 +841,7 @@ button {
     .button-out-svg {
         width: 24px;
         height: 24px;
-        background-color: #fff;
+        background-color:#595959;
         -webkit-mask: url(../img/icon/logout.svg) no-repeat 50% 50%;
         mask: url(../img/icon/logout.svg) no-repeat 50% 50%;
         background-repeat: no-repeat;
