@@ -958,4 +958,28 @@ button {
     background-color: #d6d6d6; /* Темнее при клике */
     border-color: #aaa; /* Темнее граница при клике */
   }
+  .phone-input-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    margin-bottom: 10px;
+  }
+  
+  .modal-phone-input {
+    width: 100%;
+    max-width: 300px;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: center;
+    transition: border-color 0.3s ease; 
+  }
+  
+  .phone-error-text {
+    margin-top: 5px;
+    font-size: 14px;
+    color: red;
+    text-align: center; 
+  }
   

@@ -1,3 +1,21 @@
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+import { getDatabase, ref, get, child, set } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+const firebaseConfig = {
+  apiKey: "AIzaSyBiLrIzHUq48WjfsdtDDUKncmo4WAx0c9M",
+  authDomain: "deliveryfood-c1765.firebaseapp.com",
+  projectId: "deliveryfood-c1765",
+  storageBucket: "deliveryfood-c1765.firebasestorage.app",
+  messagingSenderId: "71142399918",
+  appId: "1:71142399918:web:f3c7bc6cd49d9ef95b723f",
+  databaseURL: "https://deliveryfood-c1765-default-rtdb.europe-west1.firebasedatabase.app/"
+};
+
+
+
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
+
 const modalCart = document.querySelector('.modal-cart');
 const modalDialog = modalCart.querySelector('.modal-dialog-cart'); 
 const modalBody = document.createElement('div');
@@ -115,4 +133,81 @@ function loadCart() {
     renderCart();
   }
 }
+
+const phoneInputWrapper = document.createElement('div');
+phoneInputWrapper.classList.add('phone-input-wrapper');
+
+const modalPhoneInput = document.createElement('input');
+modalPhoneInput.classList.add('modal-phone-input');
+modalPhoneInput.setAttribute('type', 'text');
+modalPhoneInput.setAttribute('placeholder', 'Введіть номер телефону');
+
+const phoneErrorText = document.createElement('span');
+phoneErrorText.classList.add('phone-error-text');
+phoneErrorText.textContent = '';
+
+phoneInputWrapper.appendChild(modalPhoneInput);
+phoneInputWrapper.appendChild(phoneErrorText);
+
+modalFooter.before(phoneInputWrapper);
+
+
+orderButton.addEventListener('click', () => {
+  const phone = modalPhoneInput.value.trim();
+  const phoneRegex = /^\+38\d{10}$/; 
+  phoneErrorText.style.color = 'red';
+
+  if (!phoneRegex.test(phone)) {
+    modalPhoneInput.style.border = '2px solid red';
+    phoneErrorText.textContent = 'Номер телефону повинен бути у форматі +38 та містити 10 цифр.';
+
+    setTimeout(() => {
+      modalPhoneInput.style.border = '';
+      phoneErrorText.textContent = '';
+    }, 2000);
+    return;
+  }
+
+  const accountName = localStorage.getItem('login') || 'Гість';
+  const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+
+  if(cartItems.length===0){
+    modalPhoneInput.style.border = '2px solid red';
+    phoneErrorText.textContent = 'Ваш кошик порожній !!!';
+    return;
+  }
+  
+  let total = 0;
+  cartItems.forEach(item => {
+    total += item.price * item.quantity;
+  });
+
+  const orderData = {
+    accountName: accountName,
+    phoneNumber: phone,
+    cart: cartItems,
+    totalPrice: total,  
+    timestamp: new Date().toISOString(),
+  };
+
+  const newDbRef = ref(database, 'orders/' + Date.now());
+
+  set(newDbRef, orderData)
+    .then(() => {
+      
+      cart = [];
+      localStorage.setItem('cart', JSON.stringify(cart));
+      
+      phoneErrorText.textContent = 'Успішно оформлено! Чекайте виклик.';
+      phoneErrorText.style.color = 'lightgreen';
+      modalPhoneInput.value = '';
+      renderCart();
+      
+
+    })
+    .catch((error) => {
+      phoneErrorText.textContent = 'Помилка! Спробуйте пізніше.';
+    });
+});
+
 
